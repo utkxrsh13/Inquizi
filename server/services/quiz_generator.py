@@ -10,7 +10,15 @@ client = InferenceClient(
 )
 
 def generate_quiz_questions(content: str):
-    prompt = f"Generate 5 MCQs with options A–D and answers:\n\n{content}"
+    prompt = f"""
+    You are an expert quiz maker. Based on the following content, generate exactly 5 multiple choice questions (MCQs) with:
+    - Question statement
+    - 4 options labeled A, B, C, and D
+    - Final answer on a new line like "Answer: A"
+
+    Content:
+    {content}
+    """ 
     raw_output = client.chat.completions.create(
         model="moonshotai/Kimi-K2-Instruct",
         messages=[{"role": "user", "content": prompt}]

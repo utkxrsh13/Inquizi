@@ -3,21 +3,21 @@ from models import TextInput, QuizResponse
 from services.file_parser import extract_text_from_pdf, extract_text_from_docx
 from services.quiz_generator import generate_quiz_questions
 
-app = FastAPI()
+app = FastAPI()  # Initialize FastAPI app
 
-@app.get("/")
+@app.get("/")  # Root endpoint
 def root():
     return {"message": "Quiz Generator API is running"}
 
-@app.post("/generate", response_model=QuizResponse)
-def generate_quiz(input: TextInput):
+@app.post("/generate", response_model=QuizResponse) # Endpoint to generate quiz questions as text input
+def generate_quiz(input: TextInput): #--->takes text input
     try:
-        questions = generate_quiz_questions(input.content)
+        questions = generate_quiz_questions(input.content) # this function generates quiz questions
         return {"questions": questions}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/upload", response_model=QuizResponse)
+@app.post("/upload", response_model=QuizResponse) # Endpoint to upload files and generate quiz questions
 def upload_file(file: UploadFile = File(...)):
     filename = file.filename.lower()
     try:
