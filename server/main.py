@@ -9,7 +9,13 @@ app = FastAPI()  # Initialize FastAPI app
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite default port
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://localhost:3000",
+        "http://localhost:5174",
+        "https://inquizi.vercel.app",  # Add your Vercel frontend domain
+        "https://*.vercel.app"  # Allow all Vercel preview deployments
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,3 +51,6 @@ def upload_file(file: UploadFile = File(...), question_count: int = Form(default
         return {"questions": questions}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Vercel handler
+handler = app
